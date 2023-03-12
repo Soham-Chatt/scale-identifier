@@ -1,11 +1,17 @@
-CC = g++
+CC=g++
+CFLAGS=-c -Wall -std=c++11 -O2
+LDFLAGS=
+SOURCES=main.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+EXECUTABLE=program
 
-CompileParms = -c -Wall -std=c++11 -O2
+all: $(SOURCES) $(EXECUTABLE)
 
-OBJS = main.o
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
-Program: $(OBJS)
-	$(CC) $(OBJS) -o scale-identifier
+.cpp.o:
+	$(CC) $(CFLAGS) $< -o $@
 
-main.o: main.cpp main.h
-	$(CC) $(CompileParms)  main.cpp
+clean:
+	rm -f $(OBJECTS) $(EXECUTABLE)
