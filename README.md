@@ -2,7 +2,7 @@
 A program to quickly identify scales based on notes
 
 <h2>What is this project?</h2>
-This project was built to quickly identify possible scales a collection of notes belong to as I was too lazy to go on the internet to do so. So instead I spent a good hour making this.
+This project was built to quickly identify possible scales a collection of notes belong to as I was too lazy to go on the internet to do so. So instead I spent a good hour making this. This was made just for fun.
 
 <h2>What does the program do?</h2>
 The program takes user input and outputs the matching scale or in the case of an imperfect match, the top 3 scales. It is currently limited to the modern heptatonic major scales.
