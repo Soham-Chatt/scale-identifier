@@ -102,14 +102,18 @@ void key::showMatches() {
 } // showMatches
 
 int main() {
+    // Enables coloured and stylized text
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwMode = 0;
+    GetConsoleMode(hOut, &dwMode);
+    SetConsoleMode(hOut, dwMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+
     key k;
     k.info(); // Info concerning the program
 
     while(true) {
         k.readyInput(); // Prepare user input
         k.findMatches(); // Find the matches in the scales
-
-
 
         k.showMatches(); // For imperfect matches we show more information
 

@@ -3,8 +3,11 @@
 #include <vector>
 #include <map>
 #include <set> // For userNotes to handle duplicate note input from the user
+#include <Windows.h> // For some windows specific commands
+#undef max // To avoid clashing of max() functions from Windows.h and algorithm headers
 #include <algorithm> // For transform(), find() and sort()
 #include <sstream> // For preparing user input
+
 using namespace std;
 
 class key {
