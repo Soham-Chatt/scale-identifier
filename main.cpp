@@ -1,52 +1,50 @@
 #include "main.h"
 using namespace std;
 
-
-map<string,vector<string>> key::scaleDefinitions() {
-    map<string, vector<string>> scales = {
-            {"C Major",  {"C",  "D",  "E",   "F",  "G",  "A",   "B"}},
-            {"G Major",  {"G",  "A",  "B",   "C",  "D",  "E",   "F#"}},
-            {"D Major",  {"D",  "E",  "F#",  "G",  "A",  "B",   "C#"}},
-            {"A Major",  {"A",  "B",  "C#",  "D",  "E",  "F#",  "G#"}},
-            {"E Major",  {"E",  "F#", "G#",  "A",  "B",  "C#",  "D#"}},
-            {"B Major",  {"B",  "C#", "D#",  "E",  "F#", "G#",  "A#"}},
-            {"F# Major", {"F#", "G#", "A#",  "B",  "C#", "D#",  "E#"}},
-            {"C# Major", {"C#", "D#", "E#",  "F#", "G#", "A#",  "B#"}},
-            {"F Major",  {"F",  "G",  "A",   "Bb", "C",  "D",   "E"}},
-            {"Bb Major", {"Bb", "C",  "D",   "Eb", "F",  "G",   "A"}},
-            {"Eb Major", {"Eb", "F",  "G",   "Ab", "Bb", "C",   "D"}},
-            {"Ab Major", {"Ab", "Bb", "C",   "Db", "Eb", "F",   "G"}},
-            {"Db Major", {"Db", "Eb", "F",   "Gb", "Ab", "Bb",  "C"}},
-            {"Gb Major", {"Gb", "Ab", "Bb",  "Cb", "Db", "Eb",  "F"}},
-            {"Cb Major", {"Cb", "Db", "Eb",  "Fb", "Gb", "Ab",  "Bb"}}};
-    return scales;
-}
-
 void key::info() {
-    cout << "Welcome. This program is designed to determine which key the userNotes you give are played in. \n"
-            "Currently it can only check the heptatonic (common) major scales.\n"
-            "Sharps are denoted with # (F#) and flats are denoted with b (Bb). Put a space between each note. \n"
-            "Enter the notes:" << endl;
-}
+    cout << "Welcome. This program is designed to determine which scale the notes you input are played in. \n"
+            "Currently it can only check the heptatonic (common) major scales in standard notation form.\n"
+            "Sharps are denoted with \033[1m#\033[0m and flats are denoted with \033[1mb\033[0m (e.g. F# and Bb).\n"
+            "Put a space in between each note. \n"
+            "\nEnter your notes:" << endl;
+} // info
 
 void key::readyInput() {
-    // Prompt the user to input userNotes
-    string input;
-    getline(cin, input);
-    transform(input.begin(), input.end(),input.begin(), ::toupper);
+    bool validInput = false;
+    while (!validInput) {
+        validInput = true;
+        // Prompt the user to input userNotes
+        string input;
+        getline(cin, input);
+        transform(input.begin(), input.end(), input.begin(), ::toupper);
 
-    // Tokenize input by space
-    stringstream ss(input);
-    string token;
-    while (ss >> token) {
-        userNotes.push_back(token);
-    }
-}
+        // Tokenize input by space
+        stringstream ss(input);
+        string token;
+        while (ss >> token) {
+            char note = token[0];
+            char modifier = token[1];
+            // Check if the token (note) is valid
+            if (token.length() == 2 && (note >= 'A' && note <= 'G' && (modifier == '#' || modifier == 'b'))) {
+                validInput = true;
+            } else if (token.length() == 1 && (note >= 'A' && note <= 'G')) {
+                validInput = true;
+            } else {
+                validInput = false;
+                cout << "You have inputted one or more non-existent note(s). Please try again. "
+                        "Don't forget the spaces in between each note." << endl;
+                break;
+            }//else
+
+            // All checks passed
+            userNotes.insert(token);
+        }//while
+    }//while
+} // readyInput
 
 void key::findMatches() {
     // Count the number of matching userNotes for each scale
     map<string, int> scaleMatches;
-    map<string, vector<string>> scales = scaleDefinitions();
     for (auto& scale : scales) {
         int matches = 0;
         for (auto& note : userNotes) {
@@ -64,26 +62,64 @@ void key::findMatches() {
          [](const pair<string, int>& a, const pair<string, int>& b) {
              return a.second > b.second;
          });
-}
+} // findMatches
+
+void key::showMatches() {
+    // Otherwise return the closest matches
+    cout << "No perfect match found. The three best matches are:" << endl;
+    for (int i = 0; i < min(3, (int)sortedScales.size()); i++) {
+        // Show scale and how many matches
+        cout << sortedScales[i].first << " (" << sortedScales[i].second << "/7)" << endl;
+
+        // Check which notes in the top 3 scales match the user input notes
+        vector<string> scaleNotes = scales[sortedScales[i].first];
+        for (auto & scaleNote : scaleNotes) {
+            bool isMatch = false;
+            for (auto& userNote : userNotes) {
+                if (scaleNote == userNote) {
+                    isMatch = true;
+                    break;
+                }//if
+            }//for userNote
+            if (isMatch) {
+                cout << "\033[1m\033[32m" << scaleNote << "\033[0m ";
+            } else {
+                cout << scaleNote << " ";
+            }//else
+        }//for scaleNote
+        cout << endl << endl;
+    }//for i
+} // showMatches
 
 int main() {
     key k;
     k.info(); // Info concerning the program
-    k.readyInput(); // Prepare user input
-    k.findMatches(); // Find the matches in the scales
 
-    // Check if we have a perfect match
-    for (auto& i : k.sortedScales) {
-        if (i.second == 7) {
-            cout << "We have a perfect match. The scale is: " << i.first << endl;
-            return 0;
+    while(true) {
+        k.readyInput(); // Prepare user input
+        k.findMatches(); // Find the matches in the scales
+
+        // Check if we have a perfect match
+        for (auto &i: k.sortedScales) {
+            if (i.second == 7) {
+                cout << "We have a perfect match. The scale is: " << "\033[1m\033[32m" << i.first << "\033[0m " << endl;
+                return 0;
+            }//if
+        }//for i
+
+        k.showMatches(); // For imperfect matches we show more information
+
+        // Prompt the user to try again or exit
+        cout << "Do you want to try again? (y/n)" << endl;
+        char answer;
+        cin >> answer;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore remaining characters in the input stream
+        if (answer != 'y' && answer != 'Y') {
+            break;
         }//if
-    }//for i
 
-    // Otherwise return the closest matches
-    cout << "We did not find a pefect match. The three best matches are:" << endl;
-    for (int i = 0; i < min(3, (int)k.sortedScales.size()); i++) {
-        cout << k.sortedScales[i].first << " (" << k.sortedScales[i].second << "/7)" << endl;
-    }//for i
-    return 1;
-}
+        cout << "Enter the notes:" << endl;
+        k.userNotes.clear(); // Reset user input
+    }//while
+    return 0;
+} // main
