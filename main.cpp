@@ -65,30 +65,40 @@ void key::findMatches() {
 } // findMatches
 
 void key::showMatches() {
-    // Otherwise return the closest matches
-    cout << "No perfect match found. The three best matches are:" << endl;
-    for (int i = 0; i < min(3, (int)sortedScales.size()); i++) {
-        // Show scale and how many matches
-        cout << sortedScales[i].first << " (" << sortedScales[i].second << "/7)" << endl;
-
-        // Check which notes in the top 3 scales match the user input notes
-        vector<string> scaleNotes = scales[sortedScales[i].first];
-        for (auto & scaleNote : scaleNotes) {
-            bool isMatch = false;
-            for (auto& userNote : userNotes) {
-                if (scaleNote == userNote) {
-                    isMatch = true;
-                    break;
-                }//if
-            }//for userNote
-            if (isMatch) {
-                cout << "\033[1m\033[32m" << scaleNote << "\033[0m ";
-            } else {
-                cout << scaleNote << " ";
-            }//else
-        }//for scaleNote
-        cout << endl << endl;
+    // Check if we have a perfect match
+    bool perfect = false;
+    for (auto &i: sortedScales) {
+        if (i.second == 7) {
+            cout << "We have a perfect match. The scale is: " << "\033[1m\033[32m" << i.first << "\033[0m " << endl;
+            perfect = true;
+        }//if
     }//for i
+    if (!perfect) {
+        // Otherwise return the closest matches
+        cout << "No perfect match found. The three best matches are:" << endl;
+        for (int i = 0; i < min(3, (int) sortedScales.size()); i++) {
+            // Show scale and how many matches
+            cout << sortedScales[i].first << " (" << sortedScales[i].second << "/7)" << endl;
+
+            // Check which notes in the top 3 scales match the user input notes
+            vector<string> scaleNotes = scales[sortedScales[i].first];
+            for (auto &scaleNote: scaleNotes) {
+                bool isMatch = false;
+                for (auto &userNote: userNotes) {
+                    if (scaleNote == userNote) {
+                        isMatch = true;
+                        break;
+                    }//if
+                }//for userNote
+                if (isMatch) {
+                    cout << "\033[1m\033[32m" << scaleNote << "\033[0m ";
+                } else {
+                    cout << scaleNote << " ";
+                }//else
+            }//for scaleNote
+            cout << endl << endl;
+        }//for i
+    }//if
 } // showMatches
 
 int main() {
@@ -99,13 +109,7 @@ int main() {
         k.readyInput(); // Prepare user input
         k.findMatches(); // Find the matches in the scales
 
-        // Check if we have a perfect match
-        for (auto &i: k.sortedScales) {
-            if (i.second == 7) {
-                cout << "We have a perfect match. The scale is: " << "\033[1m\033[32m" << i.first << "\033[0m " << endl;
-                return 0;
-            }//if
-        }//for i
+
 
         k.showMatches(); // For imperfect matches we show more information
 
