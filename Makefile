@@ -7,5 +7,5 @@ OBJS = main.o
 Program: $(OBJS)
 	$(CC) $(OBJS) -o scale-identifier
 
-main.o: main.cc main.h
-	$(CC) $(CompileParms)  main.cc
+main.o: main.cpp main.h
+	$(CC) $(CompileParms)  main.cpp
