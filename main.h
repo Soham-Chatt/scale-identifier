@@ -1,14 +1,8 @@
-#ifndef KEYFINDER_MAIN_H
-#define KEYFINDER_MAIN_H
-
-#endif //KEYFINDER_MAIN_H
-
-
 #include <iostream>
-#include <vector>
-#include <set> // For userNotes to handle duplicate note input from the user
-#include <map>
 #include <string>
+#include <vector>
+#include <map>
+#include <set> // For userNotes to handle duplicate note input from the user
 #include <algorithm> // For transform(), find() and sort()
 #include <sstream> // For preparing user input
 using namespace std;
