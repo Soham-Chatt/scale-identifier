@@ -13,4 +13,4 @@ The program is quite simple so feel free to alter it to your liking.
 Simply download the mainW.exe executable and run it. The program should work correctly.
 <h3>Linux</h3>
 Simply download the mainL.exe executable and run it. The program should work correctly.
-If you decide to alter the code, you can build it again by running the makefile using make. The new executable should be created as program.exe.
+If you decide to alter the code, you can build it again by using make. The new executable should be created as program.exe.
