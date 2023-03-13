@@ -10,7 +10,7 @@ The program is quite simple so feel free to alter it to your liking.
 
 <h2>How to run the program?</h2>
 <h3>Windows</h3>
-Simply download the main.exe executable and run it. The program should work correctly.
+Simply download the mainW.exe executable and run it. The program should work correctly.
 <h3>Linux</h3>
-Download main.cpp, main.h and Makefile. Put them into one folder and then run make. Afterwards, the executable should be available as program.exe.
-
+Simply download the mainL.exe executable and run it. The program should work correctly.
+If you decide to alter the code, you can build it again by running the makefile using make. The new executable should be created as program.exe.
