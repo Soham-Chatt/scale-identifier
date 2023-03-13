@@ -12,5 +12,5 @@ The program is quite simple so feel free to alter it to your liking.
 <h3>Windows</h3>
 Simply download the main.exe executable and run it. The program should work correctly.
 <h3>Linux</h3>
-Download main.cpp, main.h and Makefile. Put them into one folder and then run make. Afterwards, the executable should be available as program.exe.
+Download main.cpp, main.h and Makefile. Put them into one folder and then run make. Afterwards, the executable should be available as newMainLinux.exe.
 

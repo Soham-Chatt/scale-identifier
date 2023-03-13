@@ -3,7 +3,7 @@ CFLAGS=-c -Wall -std=c++11 -O2
 LDFLAGS=
 SOURCES=main.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=program
+EXECUTABLE=newMainLinux
 
 all: $(SOURCES) $(EXECUTABLE)
 
