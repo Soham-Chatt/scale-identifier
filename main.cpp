@@ -64,6 +64,21 @@ void key::findMatches() {
          });
 } // findMatches
 
+void key::showChords(int choice) {
+    choice--;
+    cout << "Chords in " << get<0>(sortedScales[choice]) << ": ";
+    // Search for chord in chords and print out all chords
+    for (auto& i : chords) {
+        if (i.first == get<0>(sortedScales[choice])) {
+            vector<string> onlyChords = chords[i.first];
+            for (auto &j : onlyChords) {
+                cout << j << " ";
+            }//for j
+        }//if
+    }//for i
+    cout << endl << endl;
+} // showChords
+
 void key::showMatches() {
     // Check if we have a perfect match
     bool perfect = false;
@@ -71,6 +86,16 @@ void key::showMatches() {
         if (i.second == 7) {
             cout << "We have a perfect match. The scale is: " << "\033[1m\033[32m" << i.first << "\033[0m " << endl;
             perfect = true;
+
+            cout << endl << "Would you like to see the chords of this scale? (y/n)" << endl;
+            char answer;
+            cin >> answer;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            if (answer != 'y' && answer != 'Y') {
+                break;
+            } else {
+                showChords(1);
+            }//else
         }//if
     }//for i
     if (!perfect) {
@@ -98,10 +123,26 @@ void key::showMatches() {
             }//for scaleNote
             cout << endl << endl;
         }//for i
+
+        cout << endl << "Would you like to see the chords for one of the scales? (y/n)" << endl;
+        char answer;
+        cin >> answer;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        if (answer == 'y' || answer == 'Y') {
+            cout << endl << "Choose one of the top three scales. (1/2/3)" << endl;
+            int choice;
+            cin >> choice;
+            showChords(choice);
+        }//if
     }//if
 } // showMatches
 
 int main() {
+    // Enables coloured and stylized text for Windows (uncomment if on Windows)
+//    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+//    DWORD dwMode = 0;
+//    GetConsoleMode(hOut, &dwMode);
+//    SetConsoleMode(hOut, dwMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
     key k;
     k.info(); // Info concerning the program
 
@@ -112,7 +153,7 @@ int main() {
         k.showMatches(); // For imperfect matches we show more information
 
         // Prompt the user to try again or exit
-        cout << "Do you want to try again? (y/n)" << endl;
+        cout << endl << "Do you want to try inputting new notes? (y/n)" << endl;
         char answer;
         cin >> answer;
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore remaining characters in the input stream
@@ -120,7 +161,7 @@ int main() {
             break;
         }//if
 
-        cout << "Enter the notes:" << endl;
+        cout << endl << "Enter the notes:" << endl;
         k.userNotes.clear(); // Reset user input
     }//while
     return 0;
