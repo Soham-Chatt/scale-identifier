@@ -1,3 +1,4 @@
+#include <limits>
 #include "main.h"
 using namespace std;
 
@@ -5,7 +6,7 @@ void key::info() {
     cout << "Welcome. This program is designed to determine which scale the notes you input are played in. \n"
             "Currently it can only check the heptatonic (common) major scales in standard notation form.\n"
             "Sharps are denoted with \033[1m#\033[0m and flats are denoted with \033[1mb\033[0m (e.g. F# and Bb).\n"
-            "Put a space in between each note. \n"
+            "Put a space in between each note and mind capitalization. \n"
             "\nEnter your notes:" << endl;
 } // info
 
@@ -16,7 +17,6 @@ void key::readyInput() {
         // Prompt the user to input userNotes
         string input;
         getline(cin, input);
-        transform(input.begin(), input.end(), input.begin(), ::toupper);
 
         // Tokenize input by space
         stringstream ss(input);
@@ -32,7 +32,7 @@ void key::readyInput() {
             } else {
                 validInput = false;
                 cout << "You have inputted one or more non-existent note(s). Please try again. "
-                        "Don't forget the spaces in between each note." << endl;
+                        "Don't forget the spaces in between each note and use proper capitalization." << endl;
                 break;
             }//else
 
@@ -102,12 +102,6 @@ void key::showMatches() {
 } // showMatches
 
 int main() {
-    // Enables coloured and stylized text
-    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    DWORD dwMode = 0;
-    GetConsoleMode(hOut, &dwMode);
-    SetConsoleMode(hOut, dwMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
-
     key k;
     k.info(); // Info concerning the program
 
